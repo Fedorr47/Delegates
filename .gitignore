@@ -178,3 +178,7 @@ version.h
 *.pyc
 .tags*
 
+/Delegates/.vs/Delegates/v16/Browse.VC.db
+/Delegates/.vs/Delegates/v16/Browse.VC.opendb
+/Delegates/.vs/ProjectSettings.json
+/Delegates/.vs/slnx.sqlite
