@@ -1,8 +1,11 @@
 ﻿#include "DelegateTemplate/FunctionDispatcher.h"
 #include "DelegateTemplate/Dispatcher.h"
 #include "DelegateTemplate/Utils.h"
+#include "VerySimpleDelegate/Delegate.h"
 #include <iostream>
 #include <chrono>
+#include <type_traits>
+#include <typeinfo>
 
 using namespace std;
 
@@ -19,8 +22,20 @@ struct UserStruct
 	}
 };
 
+
 int main()
-{
+{	
+
+	simple_delegate::Victim test_class;
+	simple_delegate::Delegate test_delegate;
+	//test_delegate.Connect(&test_class, &simple_delegate::Victim::Foo);
+	//test_delegate();
+	//test_delegate.Connect(&test_class, &simple_delegate::Victim::Bar);
+	//test_delegate(10);
+	test_delegate.Connect(&test_class, &simple_delegate::Victim::Zoo);
+	test_delegate(10, 'z');
+
+
 	const int NUM_TESTS{ 10 };
 	const int NUM_ITERATIONS{ 100 };
 
