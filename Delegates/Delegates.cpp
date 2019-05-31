@@ -22,20 +22,44 @@ struct UserStruct
 	}
 };
 
+class Victim {
+public:
+	Victim() {};
+	~Victim() {};
+	void Foo() {
+		std::cout << "FOO" << std::endl;
+	}
+	void Bar(int a = 5) {
+		std::cout << "BAR - " << "param int = " << a << std::endl;
+	}
+	void Zoo(int a = 5, char b = 'z') {
+		std::cout << "ZOO - " << " param int = " << a
+			<< " param char = " << b << std::endl;
+	}
+	int BarI(int a)
+	{
+		std::cout << "BAR - " << "param int = " << a << std::endl;
+		return 4;
+	}
+};
+
+void test_simple_delegate()
+{
+	Victim test_class;
+	//test_delegate.Connect(&test_class, &simple_delegate::Victim::Foo);
+	//test_delegate();
+	auto test_delegate = bind(&Victim::BarI, test_class, 10);
+	test_delegate();
+	//test_delegate.Connect(&test_class, &simple_delegate::Victim::Zoo);
+	//test_delegate(10, 'z');
+	//test_delegate.Connect(&test_class, &simple_delegate::Victim::BarI);
+}
+
 
 int main()
 {	
 
-	simple_delegate::Victim test_class;
-	simple_delegate::Delegate test_delegate;
-	//test_delegate.Connect(&test_class, &simple_delegate::Victim::Foo);
-	//test_delegate();
-	//test_delegate.Connect(&test_class, &simple_delegate::Victim::Bar);
-	//test_delegate(10);
-	test_delegate.Connect(&test_class, &simple_delegate::Victim::Zoo);
-	test_delegate(10, 'z');
-
-
+	test_simple_delegate();
 	const int NUM_TESTS{ 10 };
 	const int NUM_ITERATIONS{ 100 };
 
@@ -103,8 +127,7 @@ int main()
 		auto start = chrono::high_resolution_clock::now();
 
 		for (int j{ 0 }; j < NUM_ITERATIONS; ++j)
-		{
-			functionDispatcher(5, 10.0f);
+		{			functionDispatcher(5, 10.0f);
 		}
 
 		auto end = chrono::high_resolution_clock::now();
@@ -271,3 +294,42 @@ int main()
 
 	return result;
 }
+
+
+//template< class T, class Res, class... Args>
+//class Container<T, Res, Res(T::*)(Args...)> : public IContainer
+//{
+//public:
+//	typedef Res(T::* M)(Args...);
+//	
+//	Container(T* c, M m, std::tuple<Args...> arguments) :
+//		m_class(c),
+//		m_method(m),
+//		arguments_(arguments)
+//	{
+//		cout << "ctor";
+//	}
+//
+//	void Call()
+//	{
+//		unpack_call(arguments_);
+//	}
+//
+//	template<class... Args >
+//	void unpack_call(const std::tuple<Args...>& t)
+//	{
+//		unpack_call_(t, std::index_sequence_for<Args...>{});
+//	}
+//
+//	template<class Tuple, std::size_t... Is >
+//	void unpack_call_(const Tuple& t,
+//		std::index_sequence<Is...>)
+//	{
+//		ret_val = (m_class->*m_method)(std::get<Is>(t) ...);
+//	}
+//
+//	T* m_class; 
+//	M m_method;
+//	std::tuple<Args...> arguments_;
+//	Res ret_val;
+//};
